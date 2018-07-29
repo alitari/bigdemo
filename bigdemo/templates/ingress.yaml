@@ -1,0 +1,44 @@
+{{- if .Values.ingress.enabled -}}
+{{- $springBackendService := include "springbackend.fullname" . -}}
+{{- $goBackendService := include "gobackend.fullname" . -}}
+{{- $ui2Service := include "ui2.fullname" . -}}
+{{- $springBackendServicePort := .Values.springbackend.service.externalPort -}}
+{{- $goBackendServicePort := .Values.gobackend.service.externalPort -}}
+{{- $ui2ServicePort := .Values.ui2.service.externalPort -}}
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: {{ template "bigdemo.fullname" . }}
+  labels:
+    app: {{ template "bigdemo.fullname" . }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+  annotations:
+    {{- range $key, $value := .Values.ingress.annotations }}
+      {{ $key }}: {{ $value | quote }}
+    {{- end }}
+spec:
+  rules:
+    {{- range $host := .Values.ingress.hosts }}
+    - host: {{ $host }}
+      http:
+        paths:
+          - path: /springbackend-1.0.0-SNAPSHOT
+            backend:
+              serviceName: {{ $springBackendService }}
+              servicePort: {{ $springBackendServicePort }}
+          - path: /people
+            backend:
+              serviceName: {{ $goBackendService }}
+              servicePort: {{ $goBackendServicePort }}
+          - path: /
+            backend:
+              serviceName: {{ $ui2Service }}
+              servicePort: {{ $ui2ServicePort }}
+    {{- end -}}
+  {{- if .Values.ingress.tls }}
+  tls:
+{{ toYaml .Values.ingress.tls | indent 4 }}
+  {{- end -}}
+{{- end -}}

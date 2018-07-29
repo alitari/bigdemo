@@ -1,0 +1,38 @@
+apiVersion: skaffold/v1alpha2
+kind: Config
+build:
+  tagPolicy:
+    sha256: {}
+  artifacts:
+  - imageName: springbackend
+    workspace: ./springbackend/
+  - imageName: gobackend
+    workspace: ./gobackend/
+  - imageName: ui2
+    workspace: ./ui2/
+deploy:
+  helm:
+    releases:
+    - name: bigdemo
+      chartPath: bigdemo
+      #wait: true
+      valuesFilePath: ./bigdemo-values.yaml
+      values:
+        springbackend.image: springbackend
+        gobackend.image: gobackend
+        ui2.image: ui2
+
+      #overrides builds an override values.yaml file to run with the helm deploy
+      overrides:
+        ingress:
+          enabled: true
+          annotations:
+            nginx.ingress.kubernetes.io/ssl-redirect: "false"
+        nginx-ingress:
+          controller:
+            service: 
+              type: LoadBalancer
+
+      #setValues get appended to the helm deploy with --set.  
+      #setValues:
+        #some.key: someValue

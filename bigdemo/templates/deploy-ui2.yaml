@@ -1,0 +1,31 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: {{ template "ui2.fullname" . }}
+  labels:
+    app: {{ template "ui2.fullname" . }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  replicas: {{ .Values.ui2.replicaCount }}
+  template:
+    metadata:
+      name: {{ template "ui2.fullname" . }}
+      labels:
+        app: {{ template "ui2.fullname" . }}
+        release: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: {{ template "ui2.fullname" . }}
+          image: {{ .Values.ui2.image }}
+          imagePullPolicy: {{ .Values.ui2.pullPolicy }}
+          ports:
+          - name: http
+            containerPort: 80
+          resources:
+{{ toYaml .Values.ui2.resources | indent 12 }}
+    {{- if .Values.ui2.nodeSelector }}
+      nodeSelector:
+{{ toYaml .Values.ui2.nodeSelector | indent 8 }}
+    {{- end }}

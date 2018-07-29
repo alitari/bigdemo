@@ -1,0 +1,31 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: {{ template "springbackend.fullname" . }}
+  labels:
+    app: {{ template "springbackend.fullname" . }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  replicas: {{ .Values.springbackend.replicaCount }}
+  template:
+    metadata:
+      name: {{ template "springbackend.fullname" . }}
+      labels:
+        app: {{ template "springbackend.fullname" . }}
+        release: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: {{ template "springbackend.fullname" . }}
+          image: {{ .Values.springbackend.image }}
+          imagePullPolicy: {{ .Values.springbackend.pullPolicy }}
+          ports:
+          - name: http
+            containerPort: 8080
+          resources:
+{{ toYaml .Values.springbackend.resources | indent 12 }}
+    {{- if .Values.springbackend.nodeSelector }}
+      nodeSelector:
+{{ toYaml .Values.springbackend.nodeSelector | indent 8 }}
+    {{- end }}

@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "gobackend.fullname" . }}
+  labels:
+    app: {{ template "gobackend.fullname" . }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  type: {{ .Values.gobackend.service.type }}
+  ports:
+    - port: {{ .Values.gobackend.service.externalPort }}
+      targetPort: http
+      protocol: TCP
+  selector:
+    app: {{ template "gobackend.fullname" . }}
+    release: {{ .Release.Name }}

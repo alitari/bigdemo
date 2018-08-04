@@ -1,31 +1,31 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: {{ template "productapp.fullname" . }}
+  name: {{ template "messageapp.fullname" . }}
   labels:
-    app: {{ template "productapp.fullname" . }}
+    app: {{ template "messageapp.fullname" . }}
     chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 spec:
-  replicas: {{ .Values.productapp.replicaCount }}
+  replicas: {{ .Values.messageapp.replicaCount }}
   template:
     metadata:
-      name: {{ template "productapp.fullname" . }}
+      name: {{ template "messageapp.fullname" . }}
       labels:
-        app: {{ template "productapp.fullname" . }}
+        app: {{ template "messageapp.fullname" . }}
         release: {{ .Release.Name }}
     spec:
       containers:
-        - name: {{ template "productapp.fullname" . }}
-          image: {{ .Values.productapp.image }}
-          imagePullPolicy: {{ .Values.productapp.pullPolicy }}
+        - name: {{ template "messageapp.fullname" . }}
+          image: {{ .Values.messageapp.image }}
+          imagePullPolicy: {{ .Values.messageapp.pullPolicy }}
           ports:
           - name: http
             containerPort: 8080
           resources:
-{{ toYaml .Values.productapp.resources | indent 12 }}
-    {{- if .Values.productapp.nodeSelector }}
+{{ toYaml .Values.messageapp.resources | indent 12 }}
+    {{- if .Values.messageapp.nodeSelector }}
       nodeSelector:
-{{ toYaml .Values.productapp.nodeSelector | indent 8 }}
+{{ toYaml .Values.messageapp.nodeSelector | indent 8 }}
     {{- end }}

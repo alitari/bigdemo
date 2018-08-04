@@ -19,16 +19,16 @@ We truncate at 63 chars because some Kubernetes name fields are limited to this 
 Create a default fully qualified app name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 */}}
-{{- define "productapp.fullname" -}}
-{{- printf "%s-%s" .Release.Name "productapp" | trunc 63 | trimSuffix "-" -}}
+{{- define "messageapp.fullname" -}}
+{{- printf "%s-%s" .Release.Name "messageapp" | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
 {{/*
 Create a default fully qualified app name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 */}}
-{{- define "gobackend.fullname" -}}
-{{- printf "%s-%s" .Release.Name "gobackend" | trunc 63 | trimSuffix "-" -}}
+{{- define "messagebackend.fullname" -}}
+{{- printf "%s-%s" .Release.Name "messagebackend" | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
 {{/*

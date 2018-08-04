@@ -1,18 +1,18 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ template "productapp.fullname" . }}
+  name: {{ template "messageapp.fullname" . }}
   labels:
-    app: {{ template "productapp.fullname" . }}
+    app: {{ template "messageapp.fullname" . }}
     chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 spec:
-  type: {{ .Values.productapp.service.type }}
+  type: {{ .Values.messageapp.service.type }}
   ports:
-    - port: {{ .Values.productapp.service.externalPort }}
+    - port: {{ .Values.messageapp.service.externalPort }}
       targetPort: http
       protocol: TCP
   selector:
-    app: {{ template "productapp.fullname" . }}
+    app: {{ template "messageapp.fullname" . }}
     release: {{ .Release.Name }}

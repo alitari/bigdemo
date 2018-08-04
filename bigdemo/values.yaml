@@ -1,16 +1,16 @@
-productapp:
+messageapp:
   replicaCount: 1
   pullPolicy: IfNotPresent
-  image: productapp
+  image: messageapp
   service:
     type: ClusterIP
     externalPort: 80
   resources: {}
 
-gobackend:
+messagebackend:
   replicaCount: 1
   pullPolicy: IfNotPresent
-  image: gobackend
+  image: messagebackend
   service:
     type: ClusterIP
     externalPort: 80

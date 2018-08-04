@@ -4,10 +4,10 @@ build:
   tagPolicy:
     sha256: {}
   artifacts:
-  - imageName: productapp
-    workspace: ./productapp/
-  - imageName: gobackend
-    workspace: ./gobackend/
+  - imageName: messageapp
+    workspace: ./messageapp/
+  - imageName: messagebackend
+    workspace: ./messagebackend/
   - imageName: ui2
     workspace: ./ui2/
 deploy:
@@ -18,8 +18,8 @@ deploy:
       #wait: true
       valuesFilePath: ./bigdemo-values.yaml
       values:
-        productapp.image: productapp
-        gobackend.image: gobackend
+        messageapp.image: messageapp
+        messagebackend.image: messagebackend
         ui2.image: ui2
 
       #overrides builds an override values.yaml file to run with the helm deploy

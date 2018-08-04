@@ -1,9 +1,9 @@
 {{- if .Values.ingress.enabled -}}
-{{- $productappService := include "productapp.fullname" . -}}
-{{- $goBackendService := include "gobackend.fullname" . -}}
+{{- $messageappService := include "messageapp.fullname" . -}}
+{{- $messagebackendService := include "messagebackend.fullname" . -}}
 {{- $ui2Service := include "ui2.fullname" . -}}
-{{- $productappServicePort := .Values.productapp.service.externalPort -}}
-{{- $goBackendServicePort := .Values.gobackend.service.externalPort -}}
+{{- $messageappServicePort := .Values.messageapp.service.externalPort -}}
+{{- $messagebackendServicePort := .Values.messagebackend.service.externalPort -}}
 {{- $ui2ServicePort := .Values.ui2.service.externalPort -}}
 apiVersion: extensions/v1beta1
 kind: Ingress
@@ -24,14 +24,14 @@ spec:
     - host: {{ $host }}
       http:
         paths:
-          - path: /productapp
+          - path: /messageapp
             backend:
-              serviceName: {{ $productappService }}
-              servicePort: {{ $productappServicePort }}
-          - path: /people
+              serviceName: {{ $messageappService }}
+              servicePort: {{ $messageappServicePort }}
+          - path: /messages
             backend:
-              serviceName: {{ $goBackendService }}
-              servicePort: {{ $goBackendServicePort }}
+              serviceName: {{ $messagebackendService }}
+              servicePort: {{ $messagebackendServicePort }}
           - path: /
             backend:
               serviceName: {{ $ui2Service }}

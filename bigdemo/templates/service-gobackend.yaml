@@ -1,18 +1,18 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ template "gobackend.fullname" . }}
+  name: {{ template "messagebackend.fullname" . }}
   labels:
-    app: {{ template "gobackend.fullname" . }}
+    app: {{ template "messagebackend.fullname" . }}
     chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 spec:
-  type: {{ .Values.gobackend.service.type }}
+  type: {{ .Values.messagebackend.service.type }}
   ports:
-    - port: {{ .Values.gobackend.service.externalPort }}
+    - port: {{ .Values.messagebackend.service.externalPort }}
       targetPort: http
       protocol: TCP
   selector:
-    app: {{ template "gobackend.fullname" . }}
+    app: {{ template "messagebackend.fullname" . }}
     release: {{ .Release.Name }}

@@ -1,31 +1,31 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: {{ template "gobackend.fullname" . }}
+  name: {{ template "messagebackend.fullname" . }}
   labels:
-    app: {{ template "gobackend.fullname" . }}
+    app: {{ template "messagebackend.fullname" . }}
     chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 spec:
-  replicas: {{ .Values.gobackend.replicaCount }}
+  replicas: {{ .Values.messagebackend.replicaCount }}
   template:
     metadata:
-      name: {{ template "gobackend.fullname" . }}
+      name: {{ template "messagebackend.fullname" . }}
       labels:
-        app: {{ template "gobackend.fullname" . }}
+        app: {{ template "messagebackend.fullname" . }}
         release: {{ .Release.Name }}
     spec:
       containers:
-        - name: {{ template "gobackend.fullname" . }}
-          image: {{ .Values.gobackend.image }}
-          imagePullPolicy: {{ .Values.gobackend.pullPolicy }}
+        - name: {{ template "messagebackend.fullname" . }}
+          image: {{ .Values.messagebackend.image }}
+          imagePullPolicy: {{ .Values.messagebackend.pullPolicy }}
           ports:
           - name: http
             containerPort: 8000
           resources:
-{{ toYaml .Values.gobackend.resources | indent 12 }}
-    {{- if .Values.gobackend.nodeSelector }}
+{{ toYaml .Values.messagebackend.resources | indent 12 }}
+    {{- if .Values.messagebackend.nodeSelector }}
       nodeSelector:
-{{ toYaml .Values.gobackend.nodeSelector | indent 8 }}
+{{ toYaml .Values.messagebackend.nodeSelector | indent 8 }}
     {{- end }}

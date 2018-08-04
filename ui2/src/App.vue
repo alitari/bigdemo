@@ -3,64 +3,57 @@
     <img src="./assets/logo.png" height="100" width="150" align="left">
     <img src="./assets/skaffold.png" height="100" width="150" align="right">
     <h1>{{ msg }}</h1>
-    <table align="center">
-      <tr>
-        <th width="20%" >Backend</th>
-        <th width="20%">URL</th>
-        <th width="60%">Response</th>
-      </tr>
-      <tr>
-        <td><a href="#" v-on:click="getSpring()">Call Spring</a></td>
-        <td>{{ springURL}}</td>
-        <td>{{ springresult}}</td>
-      </tr>
-      <tr>
-        <td><a href="#" v-on:click="getGo()">Call Go</a></td>
-        <td>{{ goURL}}</td>
-        <td>{{ goresult}}</td>
-      </tr>
+    <h2><a href="/messageapp" >Message Application</a></h2>
+    <hr>
+
+    <h2><a href="#" v-on:click="fetchMessages()">Fetch messages</a></h2>
+
+    <table id="messages" align="center">
+      <thead>
+        <tr>
+          <th width="20%">Time</th>
+          <th width="20%">User</th>
+          <th width="60%">Text</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="m in messages">
+          <td>?</td>
+          <td>?</td>
+          <td>{{m.text}}</td>
+        </tr>
+      </tbody>
     </table>
+    
   </div>
 </template>
 
 <script>
-import axios from 'axios'
-
+import axios from "axios";
 
 export default {
   name: "app",
   data() {
     return {
       msg: "Big Microservices DEMO",
-      springresult: null,
-      springURL : 'http://bigdemo.com/productapp/',
-      goresult: null,
-      goURL : 'http://bigdemo.com/people'
+      messages: [],
+      goURL: "http://bigdemo.com/messages"
     };
   },
   methods: {
-    getSpring() {
-      axios.get(this.springURL)
-            .then(response => {
-              this.springresult = response.data
-            })
-            .catch(error => {
-              console.log(error)
-              this.springresult = "error"
-            })
-    },
-    getGo() {
-      axios.get(this.goURL)
-            .then(response => {
-              this.goresult = response.data
-            })
-            .catch(error => {
-              console.log(error)
-              this.goresult = "error"
-            })
-    },
+    fetchMessages() {
+      axios
+        .get(this.goURL)
+        .then(response => {
+          this.messages = response.data;
+        })
+        .catch(error => {
+          console.log(error);
+          this.messages = "error";
+        });
+    }
   }
-}
+};
 </script>
 
 <style>
@@ -92,8 +85,10 @@ a {
   color: #42b983;
 }
 
-table, th, td {
-    border: 1px solid black;
-    border-collapse: collapse;
+table,
+th,
+td {
+  border: 1px solid black;
+  border-collapse: collapse;
 }
 </style>

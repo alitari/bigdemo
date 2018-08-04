@@ -33,7 +33,7 @@ export default {
     return {
       msg: "Big Microservices DEMO",
       springresult: null,
-      springURL : 'http://bigdemo.com/springbackend-1.0.0-SNAPSHOT/api/greeting',
+      springURL : 'http://bigdemo.com/productapp/',
       goresult: null,
       goURL : 'http://bigdemo.com/people'
     };

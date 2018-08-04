@@ -1,8 +1,8 @@
 {{- if .Values.ingress.enabled -}}
-{{- $springBackendService := include "springbackend.fullname" . -}}
+{{- $productappService := include "productapp.fullname" . -}}
 {{- $goBackendService := include "gobackend.fullname" . -}}
 {{- $ui2Service := include "ui2.fullname" . -}}
-{{- $springBackendServicePort := .Values.springbackend.service.externalPort -}}
+{{- $productappServicePort := .Values.productapp.service.externalPort -}}
 {{- $goBackendServicePort := .Values.gobackend.service.externalPort -}}
 {{- $ui2ServicePort := .Values.ui2.service.externalPort -}}
 apiVersion: extensions/v1beta1
@@ -24,10 +24,10 @@ spec:
     - host: {{ $host }}
       http:
         paths:
-          - path: /springbackend-1.0.0-SNAPSHOT
+          - path: /productapp
             backend:
-              serviceName: {{ $springBackendService }}
-              servicePort: {{ $springBackendServicePort }}
+              serviceName: {{ $productappService }}
+              servicePort: {{ $productappServicePort }}
           - path: /people
             backend:
               serviceName: {{ $goBackendService }}

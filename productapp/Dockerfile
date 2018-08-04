@@ -7,5 +7,8 @@ FROM mavenrepo AS mavenbuild
 COPY . .
 RUN mvn clean package
 
-FROM tomcat:9.0.10-jre10-slim
-COPY --from=mavenbuild /app/target/*.war $CATALINA_HOME/webapps/
+FROM openjdk:10-jre-slim
+COPY --from=mavenbuild /app/target/*.jar app.jar
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod u+x /entrypoint.sh
+ENTRYPOINT ["/entrypoint.sh"]

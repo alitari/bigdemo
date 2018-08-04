@@ -19,8 +19,8 @@ We truncate at 63 chars because some Kubernetes name fields are limited to this 
 Create a default fully qualified app name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 */}}
-{{- define "springbackend.fullname" -}}
-{{- printf "%s-%s" .Release.Name "springbackend" | trunc 63 | trimSuffix "-" -}}
+{{- define "productapp.fullname" -}}
+{{- printf "%s-%s" .Release.Name "productapp" | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
 {{/*

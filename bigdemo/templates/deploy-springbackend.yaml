@@ -1,31 +1,31 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: {{ template "springbackend.fullname" . }}
+  name: {{ template "productapp.fullname" . }}
   labels:
-    app: {{ template "springbackend.fullname" . }}
+    app: {{ template "productapp.fullname" . }}
     chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 spec:
-  replicas: {{ .Values.springbackend.replicaCount }}
+  replicas: {{ .Values.productapp.replicaCount }}
   template:
     metadata:
-      name: {{ template "springbackend.fullname" . }}
+      name: {{ template "productapp.fullname" . }}
       labels:
-        app: {{ template "springbackend.fullname" . }}
+        app: {{ template "productapp.fullname" . }}
         release: {{ .Release.Name }}
     spec:
       containers:
-        - name: {{ template "springbackend.fullname" . }}
-          image: {{ .Values.springbackend.image }}
-          imagePullPolicy: {{ .Values.springbackend.pullPolicy }}
+        - name: {{ template "productapp.fullname" . }}
+          image: {{ .Values.productapp.image }}
+          imagePullPolicy: {{ .Values.productapp.pullPolicy }}
           ports:
           - name: http
             containerPort: 8080
           resources:
-{{ toYaml .Values.springbackend.resources | indent 12 }}
-    {{- if .Values.springbackend.nodeSelector }}
+{{ toYaml .Values.productapp.resources | indent 12 }}
+    {{- if .Values.productapp.nodeSelector }}
       nodeSelector:
-{{ toYaml .Values.springbackend.nodeSelector | indent 8 }}
+{{ toYaml .Values.productapp.nodeSelector | indent 8 }}
     {{- end }}

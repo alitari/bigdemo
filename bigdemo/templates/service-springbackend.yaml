@@ -1,18 +1,18 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ template "springbackend.fullname" . }}
+  name: {{ template "productapp.fullname" . }}
   labels:
-    app: {{ template "springbackend.fullname" . }}
+    app: {{ template "productapp.fullname" . }}
     chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 spec:
-  type: {{ .Values.springbackend.service.type }}
+  type: {{ .Values.productapp.service.type }}
   ports:
-    - port: {{ .Values.springbackend.service.externalPort }}
+    - port: {{ .Values.productapp.service.externalPort }}
       targetPort: http
       protocol: TCP
   selector:
-    app: {{ template "springbackend.fullname" . }}
+    app: {{ template "productapp.fullname" . }}
     release: {{ .Release.Name }}

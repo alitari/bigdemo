@@ -4,8 +4,8 @@ build:
   tagPolicy:
     sha256: {}
   artifacts:
-  - imageName: springbackend
-    workspace: ./springbackend/
+  - imageName: productapp
+    workspace: ./productapp/
   - imageName: gobackend
     workspace: ./gobackend/
   - imageName: ui2
@@ -18,7 +18,7 @@ deploy:
       #wait: true
       valuesFilePath: ./bigdemo-values.yaml
       values:
-        springbackend.image: springbackend
+        productapp.image: productapp
         gobackend.image: gobackend
         ui2.image: ui2
 

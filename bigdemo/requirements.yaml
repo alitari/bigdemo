@@ -1,5 +1,8 @@
 # requirements.yaml
 dependencies:
-- name: nginx-ingress
-  version: " 0.23.0"
-  repository: https://kubernetes-charts.storage.googleapis.com/
+  - name: nginx-ingress
+    version: " 0.23.0"
+    repository: https://kubernetes-charts.storage.googleapis.com/
+  - name: keycloak
+    version: "3.1.0"
+    repository: https://kubernetes-charts.storage.googleapis.com/

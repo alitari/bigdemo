@@ -12,8 +12,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
 class MessageController {
+
     @Autowired
-    MessageService messageService;
+    MessageSender messageSender;
 
     @GetMapping("/form")
     public String formGet(Model model) {
@@ -23,6 +24,7 @@ class MessageController {
 
     @PostMapping("/form")
     public String formPost(Message message, BindingResult bindingResult, Model model) {
+        messageSender.sendMessage(message);
         if (!bindingResult.hasErrors()) {
             model.addAttribute("noErrors", true);
         }

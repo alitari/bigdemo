@@ -8,6 +8,9 @@ build:
     workspace: ./messageapp/
   - imageName: messagebackend
     workspace: ./messagebackend/
+  - imageName: messageredisconsumer
+    workspace: ./messageredisconsumer/
+
   - imageName: ui2
     workspace: ./ui2/
 deploy:
@@ -20,6 +23,7 @@ deploy:
       values:
         messageapp.image: messageapp
         messagebackend.image: messagebackend
+        messageredisconsumer.image: messageredisconsumer
         ui2.image: ui2
 
       #overrides builds an override values.yaml file to run with the helm deploy

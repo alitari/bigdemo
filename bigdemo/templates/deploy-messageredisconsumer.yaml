@@ -1,0 +1,34 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: {{ template "messageredisconsumer.fullname" . }}
+  labels:
+    app: {{ template "messageredisconsumer.fullname" . }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  replicas: {{ .Values.messageredisconsumer.replicaCount }}
+  template:
+    metadata:
+      name: {{ template "messageredisconsumer.fullname" . }}
+      labels:
+        app: {{ template "messageredisconsumer.fullname" . }}
+        release: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: {{ template "messageredisconsumer.fullname" . }}
+          image: {{ .Values.messageredisconsumer.image }}
+          imagePullPolicy: {{ .Values.messageredisconsumer.pullPolicy }}
+          env:
+            - name: RABBITMQ_HOST
+              value: {{ .Release.Name }}-rabbitmq
+          ports:
+          - name: http
+            containerPort: 8000
+          resources:
+{{ toYaml .Values.messageredisconsumer.resources | indent 12 }}
+    {{- if .Values.messageredisconsumer.nodeSelector }}
+      nodeSelector:
+{{ toYaml .Values.messageredisconsumer.nodeSelector | indent 8 }}
+    {{- end }}

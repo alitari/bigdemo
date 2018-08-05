@@ -16,6 +16,15 @@ messagebackend:
     externalPort: 80
   resources: {}
 
+messageredisconsumer:
+  replicaCount: 1
+  pullPolicy: IfNotPresent
+  image: messageredisconsumer
+  service:
+    type: ClusterIP
+    externalPort: 80
+  resources: {}
+
 ui2:
   replicaCount: 1
   pullPolicy: IfNotPresent
@@ -50,3 +59,8 @@ ingress:
     # - secretName: chart-example-tls
     #   hosts:
     #     - chart-example.local
+
+rabbitmq:
+  rabbitmq:
+    password: user
+    erlangCookie: cookie

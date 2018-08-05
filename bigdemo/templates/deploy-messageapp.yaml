@@ -20,6 +20,16 @@ spec:
         - name: {{ template "messageapp.fullname" . }}
           image: {{ .Values.messageapp.image }}
           imagePullPolicy: {{ .Values.messageapp.pullPolicy }}
+          env:
+            - name: RABBITMQ_HOST
+              value: {{ .Release.Name }}-rabbitmq
+            - name: RABBITMQ_USER
+              value: {{ .Values.rabbitmq.rabbitmq.user }}
+            - name: RABBITMQ_PASSWORD
+              value: {{ .Values.rabbitmq.rabbitmq.password | quote }}
+            - name: RABBITMQ_MESSAGE_EXCHANGE
+              value: {{ .Values.messageapp.rabbitmq.exchange }}
+
           ports:
           - name: http
             containerPort: 8080

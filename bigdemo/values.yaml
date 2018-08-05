@@ -6,6 +6,8 @@ messageapp:
     type: ClusterIP
     externalPort: 80
   resources: {}
+  rabbitmq:
+    exchange: messageExchange
 
 messagebackend:
   replicaCount: 1
@@ -24,6 +26,8 @@ messageredisconsumer:
     type: ClusterIP
     externalPort: 80
   resources: {}
+  rabbitmq:
+    queue: redisqueue
 
 ui2:
   replicaCount: 1
@@ -62,5 +66,23 @@ ingress:
 
 rabbitmq:
   rabbitmq:
+    user: user
     password: user
     erlangCookie: cookie
+
+redis:
+  password: redis
+  persistence:
+    enabled: false
+  slave:
+    serviceType: ClusterIP
+    readinessProbe:
+      initialDelaySeconds: 60
+    livenessProbe:
+      initialDelaySeconds: 60
+  master:
+    serviceType: ClusterIP
+    readinessProbe:
+      initialDelaySeconds: 60
+    livenessProbe:
+      initialDelaySeconds: 60

@@ -1,12 +1,17 @@
 #!/usr/bin/env python
 import pika
+import redis
 import os
 
 rabbitmq_host = os.environ['RABBITMQ_HOST']
-queue_name = 'redisconsumer'
-exchange_name = 'messages-exchange'
+rabbitmq_user = os.environ['RABBITMQ_USER']
+rabbitmq_password = os.environ['RABBITMQ_PASSWORD']
 
-credentials = pika.PlainCredentials(username='user', password='user')
+queue_name = os.environ['RABBITMQ_MESSAGE_QUEUE']
+exchange_name = os.environ['RABBITMQ_EXCHANGE']
+
+credentials = pika.PlainCredentials(
+    username=rabbitmq_user, password=rabbitmq_password)
 print(' using rabbitmq host \'% s\' with user \'% s\'' %
       (rabbitmq_host, credentials.username))
 

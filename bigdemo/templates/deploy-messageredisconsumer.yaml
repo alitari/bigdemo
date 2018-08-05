@@ -23,6 +23,14 @@ spec:
           env:
             - name: RABBITMQ_HOST
               value: {{ .Release.Name }}-rabbitmq
+            - name: RABBITMQ_USER
+              value: {{ .Values.rabbitmq.rabbitmq.user }}
+            - name: RABBITMQ_PASSWORD
+              value: {{ .Values.rabbitmq.rabbitmq.password | quote }}
+            - name: RABBITMQ_MESSAGE_QUEUE
+              value: {{ .Values.messageredisconsumer.rabbitmq.queue }}
+            - name: RABBITMQ_EXCHANGE
+              value: {{ .Values.messageapp.rabbitmq.exchange }}
           ports:
           - name: http
             containerPort: 8000

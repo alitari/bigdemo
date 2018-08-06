@@ -20,6 +20,11 @@ spec:
         - name: {{ template "messagebackend.fullname" . }}
           image: {{ .Values.messagebackend.image }}
           imagePullPolicy: {{ .Values.messagebackend.pullPolicy }}
+          env:
+            - name: REDIS_HOST
+              value: {{ .Release.Name }}-redis-master
+            - name: REDIS_PASSWORD
+              value: {{ .Values.redis.password }}
           ports:
           - name: http
             containerPort: 8000

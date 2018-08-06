@@ -6,7 +6,11 @@
     <h2><a href="/messageapp" >Message Application</a></h2>
     <hr>
 
-    <h2><a href="#" v-on:click="fetchMessages()">Fetch messages</a></h2>
+    <!-- <a href="#" v-on:click="fetchMessages('boy')">Fetch messages for word boy</a></h2> -->
+    <h2>
+    <input id="searchInpt" value="a word..."><button id="searchBtn" v-on:click="fetchMessages()">Search</button>
+
+    </h2>
 
     <table id="messages" align="center">
       <thead>
@@ -42,8 +46,10 @@ export default {
   },
   methods: {
     fetchMessages() {
+      var input = document.getElementById("searchInpt");
+
       axios
-        .get(this.goURL)
+        .get(this.goURL.concat("?word=").concat(input.value))
         .then(response => {
           this.messages = response.data;
         })

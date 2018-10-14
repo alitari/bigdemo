@@ -1,8 +1,6 @@
-apiVersion: skaffold/v1alpha2
+apiVersion: skaffold/v1alpha3
 kind: Config
 build:
-  tagPolicy:
-    sha256: {}
   artifacts:
   - imageName: messageapp
     workspace: ./messageapp/
@@ -10,33 +8,32 @@ build:
     workspace: ./messagebackend/
   - imageName: messageredisconsumer
     workspace: ./messageredisconsumer/
-
   - imageName: ui2
     workspace: ./ui2/
+  tagPolicy:
+    sha256: {}
+  local:
+    skipPush: true
 deploy:
   helm:
     releases:
     - name: bigdemo
       chartPath: bigdemo
-      #wait: true
-      valuesFilePath: ./bigdemo-values.yaml
+      valuesFiles:
+      - ./bigdemo-values.yaml
       values:
         messageapp.image: messageapp
         messagebackend.image: messagebackend
         messageredisconsumer.image: messageredisconsumer
         ui2.image: ui2
-
-      #overrides builds an override values.yaml file to run with the helm deploy
-      overrides:
-        ingress:
-          enabled: true
-          annotations:
-            nginx.ingress.kubernetes.io/ssl-redirect: "false"
-        nginx-ingress:
-          controller:
-            service: 
-              type: LoadBalancer
-
-      #setValues get appended to the helm deploy with --set.  
-      #setValues:
-        #some.key: someValue
+      namespace: ""
+      version: ""
+      setValues: {}
+      setValueTemplates: {}
+      wait: false
+      recreatePods: false
+      overrides: {}
+      packaged: null
+      imageStrategy:
+        fqn: null
+        helm: null

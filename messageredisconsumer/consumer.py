@@ -51,9 +51,11 @@ def message_received(ch, method, properties, body):
 
 def store_message(json):
     m_text = json['text']
+    m_creationTime = json['creationTime']
+    m_author = json['author']
     m_id = r.incr(message_id_key)
     print(" Received message text: %s" % m_text)
-    if r.set(m_id, m_text):
+    if r.rpush(m_id, m_text,m_author,m_creationTime):
         print(" and stored with id %s" % m_id)
     return m_id
 

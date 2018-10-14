@@ -8,7 +8,8 @@
 
     <!-- <a href="#" v-on:click="fetchMessages('boy')">Fetch messages for word boy</a></h2> -->
     <h2>
-    <input id="searchInpt" value="a word..."><button id="searchBtn" v-on:click="fetchMessages()">Search</button>
+      Search by word from {{messageCount}} messages<br>
+    <input id="searchInpt" value=""><button id="searchBtn" v-on:click="fetchMessages()">Search</button>
 
     </h2>
 
@@ -16,18 +17,19 @@
       <thead>
         <tr>
           <th width="20%">Time</th>
-          <th width="20%">User</th>
+          <th width="20%">Athor</th>
           <th width="60%">Text</th>
         </tr>
       </thead>
       <tbody>
         <tr v-for="m in messages">
-          <td>?</td>
-          <td>?</td>
+          <td>{{m.creationTime}}</td>
+          <td>{{m.author}}</td>
           <td>{{m.text}}</td>
         </tr>
       </tbody>
     </table>
+  
     
   </div>
 </template>
@@ -41,7 +43,8 @@ export default {
     return {
       msg: "Big Microservices DEMO",
       messages: [],
-      goURL: "http://bigdemo.com/messages"
+      goURL: "http://bigdemo.com/messages",
+      messageCount: 0
     };
   },
   methods: {
@@ -56,6 +59,14 @@ export default {
         .catch(error => {
           console.log(error);
           this.messages = "error";
+        });
+      axios
+        .get(this.goURL.concat("/count"))
+        .then(response => {
+          this.messageCount = response.data.text;
+        })
+        .catch(error => {
+          console.log(error);
         });
     }
   }

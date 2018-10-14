@@ -1,5 +1,7 @@
 package de.alexkrieg.messageapp;
 
+import java.util.Date;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 
@@ -24,6 +26,9 @@ class MessageController {
 
     @PostMapping("/form")
     public String formPost(Message message, BindingResult bindingResult, Model model) {
+        message.setCreationTime(new Date());
+        message.setAuthor("messageapp");
+
         messageSender.sendMessage(message);
         if (!bindingResult.hasErrors()) {
             model.addAttribute("noErrors", true);

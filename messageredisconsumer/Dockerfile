@@ -1,4 +1,4 @@
-FROM python:3-slim
+FROM python:2.7.15-slim-jessie
 
 ENV PYTHONUNBUFFERED=0
 WORKDIR /app

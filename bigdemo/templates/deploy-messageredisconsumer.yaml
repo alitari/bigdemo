@@ -31,6 +31,11 @@ spec:
               value: {{ .Values.messageredisconsumer.rabbitmq.queue }}
             - name: RABBITMQ_EXCHANGE
               value: {{ .Values.messageapp.rabbitmq.exchange }}
+            - name: REDIS_HOST
+              value: {{ .Release.Name }}-redis-master
+            - name: REDIS_PASSWORD
+              value: {{ .Values.redis.password }}
+              
           ports:
           - name: http
             containerPort: 8000

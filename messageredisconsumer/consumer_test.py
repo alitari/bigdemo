@@ -8,10 +8,15 @@ from mock import Mock, MagicMock, call
 class ConsumerTest(unittest.TestCase):
 
     @unittest.skip("can only run with redis")
-    def test_redis_valid_message_received(self):
+    def test_redis(self):
         consumer.ds = consumer.KVStorage('localhost', 'redis')
         consumer.message_received(
             '{ "text":"Hello", "author":"Alex", "creationTime":73364}')
+
+    @unittest.skip("can only run with rabbitmq")
+    def test_rabbitmq(self):
+        producer = consumer.MessageProducer('localhost', 'user', 'user',
+                                            'messageExchange', 'redisqueue', consumer.message_received)
 
     def test_mock_valid_message_received(self):
         consumer.ds = Mock(spec=consumer.KVStorage)
@@ -42,12 +47,5 @@ class ConsumerTest(unittest.TestCase):
         self.assertFalse(consumer.ds.store_word.called)
 
 
-def run_suite():
-    loader = unittest.TestLoader()
-    loader.testMethodPrefix = "test_"
-    suite = loader.discover('.', '*_test.py')
-    unittest.TextTestRunner(verbosity=2).run(suite)
-
-
 if __name__ == '__main__':
-    run_suite()
+    unittest.main()

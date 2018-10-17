@@ -30,12 +30,16 @@ class KVStorage:
 
 class MessageProducer:
 
+    def __init__(self, host, user, password, exchange, queue, listener_method):
+        self.rabbitmq_host = host
+        self.rabbitmq_user = user
+        self.rabbitmq_password = password
+        self.exchange_name = exchange
+        self.queue_name = queue
+        self.listener_method = listener_method
+        self.init_rabbitmq()
+
     def init_rabbitmq(self):
-        self.rabbitmq_host = os.environ['RABBITMQ_HOST']
-        self.rabbitmq_user = os.environ['RABBITMQ_USER']
-        self.rabbitmq_password = os.environ['RABBITMQ_PASSWORD']
-        self.queue_name = os.environ['RABBITMQ_MESSAGE_QUEUE']
-        self.exchange_name = os.environ['RABBITMQ_EXCHANGE']
         self.credentials = pika.PlainCredentials(
             username=self.rabbitmq_user, password=self.rabbitmq_password)
         print(' using rabbitmq host \'% s\' with user \'% s\'' %
@@ -47,6 +51,9 @@ class MessageProducer:
         self.result = self.channel.queue_declare(
             queue=self.queue_name, durable=True)
 
+        self.channel.exchange_declare(
+            exchange=self.exchange_name, exchange_type='direct', durable=True)
+
         self.channel.queue_bind(exchange=self.exchange_name,
                                 queue=self.result.method.queue)
 
@@ -56,10 +63,6 @@ class MessageProducer:
 
         print('queue \'% s\' bound to exchange \'% s\'' %
               (self.queue_name, self.exchange_name))
-
-    def __init__(self, listener_method):
-        self.listener_method = listener_method
-        self.init_rabbitmq()
 
     def consume_method(self, ch, method, properties, body):
         self.listener_method(body)
@@ -98,6 +101,7 @@ def message_received(body):
 
 
 if __name__ == '__main__':
-    producer = MessageProducer(message_received)
+    producer = MessageProducer(os.environ['RABBITMQ_HOST'], os.environ['RABBITMQ_USER'], os.environ['RABBITMQ_PASSWORD'],
+                               os.environ['RABBITMQ_EXCHANGE'], os.environ['RABBITMQ_MESSAGE_QUEUE'], message_received)
     ds = KVStorage(os.environ['REDIS_HOST'], os.environ['REDIS_PASSWORD'])
     producer.start_consuming()

@@ -52,7 +52,7 @@ class MessageProducer:
             queue=self.queue_name, durable=True)
 
         self.channel.exchange_declare(
-            exchange=self.exchange_name, exchange_type='direct', durable=True)
+            exchange=self.exchange_name, exchange_type='fanout', durable=True)
 
         self.channel.queue_bind(exchange=self.exchange_name,
                                 queue=self.result.method.queue)

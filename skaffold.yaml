@@ -1,19 +1,19 @@
-apiVersion: skaffold/v1alpha3
+apiVersion: skaffold/v1alpha4
 kind: Config
 build:
   artifacts:
-  - imageName: messageapp
-    workspace: ./messageapp/
-  - imageName: messagebackend
-    workspace: ./messagebackend/
-  - imageName: messageredisconsumer
-    workspace: ./messageredisconsumer/
-  - imageName: ui2
-    workspace: ./ui2/
+  - image: messageapp
+    context: ./messageapp/
+  - image: messagebackend
+    context: ./messagebackend/
+  - image: messageredisconsumer
+    context: ./messageredisconsumer/
+  - image: ui2
+    context: ./ui2/
   tagPolicy:
     sha256: {}
   local:
-    skipPush: true
+    push: false
 deploy:
   helm:
     releases:
@@ -26,14 +26,3 @@ deploy:
         messagebackend.image: messagebackend
         messageredisconsumer.image: messageredisconsumer
         ui2.image: ui2
-      namespace: ""
-      version: ""
-      setValues: {}
-      setValueTemplates: {}
-      wait: false
-      recreatePods: false
-      overrides: {}
-      packaged: null
-      imageStrategy:
-        fqn: null
-        helm: null

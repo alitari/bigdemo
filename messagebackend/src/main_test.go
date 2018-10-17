@@ -42,7 +42,6 @@ func (r *mockDataAccess) queryData(query string) (keys []string, err error) {
 }
 
 func init() {
-	os.Setenv("HTTP_PORT", "8000")
 	dataAcc = &mockDataAccess{data: nil, count: -1, keys: nil}
 	go serv()
 }

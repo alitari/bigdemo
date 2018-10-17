@@ -61,7 +61,7 @@ func serv() error {
 
 	router.HandleFunc("/messages", GetMessages).Methods("GET")
 
-	listenPort := fmt.Sprintf(":%s", os.Getenv("HTTP_PORT"))
+	listenPort := fmt.Sprintf(":%s", "8000")
 	fmt.Printf("listening: %s\n", listenPort)
 	return http.ListenAndServe(listenPort, router)
 }

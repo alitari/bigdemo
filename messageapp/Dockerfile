@@ -4,7 +4,7 @@ COPY pom.xml .
 RUN mvn clean package --fail-never
 
 FROM mavenrepo AS mavenbuild 
-COPY . .
+COPY src/ ./src
 RUN mvn clean package
 
 FROM openjdk:10-jre-slim

@@ -1,4 +1,4 @@
-package de.alexkrieg.messageapp;
+package de.alexkrieg.messageapp.domain;
 
 import java.util.Date;
 

@@ -22,10 +22,10 @@ class ConsumerTest(unittest.TestCase):
         consumer.ds = Mock(spec=consumer.KVStorage)
         consumer.ds.store_message.return_value = 11
         consumer.message_received(
-            '{ "text":"Hello world", "author":"Alex", "creationTime":73364}')
+            '{"text":"Hello world","creationTime":{"epochSecond":1539867200,"nano":286395000},"author":"messageapp"}')
 
         consumer.ds.store_message.assert_called_once_with(
-            "Hello world", "Alex", 73364)
+            "Hello world", "messageapp", '{ "epochSecond": 1539867200 , "nano": 286395000 }')
 
         self.assertEqual(consumer.ds.store_word.call_args_list, [
                          call(u'Hello', 11), call(u'world', 11)])

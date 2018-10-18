@@ -83,9 +83,11 @@ def message_received(body):
         m_dict = json.loads(body)
 
         m_text = m_dict['text']
-        m_creationTime = m_dict['creationTime']
+        m_epochSecond = m_dict['creationTime']['epochSecond']
+        m_nano = m_dict['creationTime']['nano']
         m_author = m_dict['author']
-        m_id = ds.store_message(m_text, m_author, m_creationTime)
+        m_id = ds.store_message(
+            m_text, m_author, '{ "epochSecond": %d , "nano": %d }' % (m_epochSecond, m_nano))
 
         words_all = m_dict['text'].split()
         #words_filtered = [w for w in words_all]

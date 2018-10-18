@@ -1,9 +1,6 @@
 package de.alexkrieg.messageapp;
 
 import java.time.Instant;
-import java.time.LocalDateTime;
-import java.util.Date;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 

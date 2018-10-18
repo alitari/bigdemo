@@ -1,15 +1,29 @@
 package de.alexkrieg.messageapp.domain;
 
-import java.util.Date;
+import java.time.Instant;
 
 public class Message {
 
     private String text;
-    private Date creationTime;
+    private Instant creationTime;
     private String author;
 
     public String getText() {
         return text;
+    }
+
+    /**
+     * @return the creationTime
+     */
+    public Instant getCreationTime() {
+        return creationTime;
+    }
+
+    /**
+     * @param creationTime the creationTime to set
+     */
+    public void setCreationTime(Instant creationTime) {
+        this.creationTime = creationTime;
     }
 
     public String getAuthor() {
@@ -18,14 +32,6 @@ public class Message {
 
     public void setAuthor(String author) {
         this.author = author;
-    }
-
-    public Date getCreationTime() {
-        return creationTime;
-    }
-
-    public void setCreationTime(Date creationTime) {
-        this.creationTime = creationTime;
     }
 
     public void setText(String text) {

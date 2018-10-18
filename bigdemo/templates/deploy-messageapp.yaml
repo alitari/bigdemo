@@ -29,6 +29,8 @@ spec:
               value: {{ .Values.rabbitmq.rabbitmq.password | quote }}
             - name: RABBITMQ_MESSAGE_EXCHANGE
               value: {{ .Values.messageapp.rabbitmq.exchange }}
+            - name: BASE_URL
+              value: "http://{{ index .Values.ingress.hosts 0 }}"
 
           ports:
           - name: http

@@ -11,11 +11,11 @@
         <h2>Your message</h2>
 
         <@spring.bind "message"/>
+        
         <#if message?? && noErrors??>
             Your submitted message:
             <div>${message.text}</div><br>
             <a href="form">New Message</a>
-            <a href="/messageapp">Back</a>
         <#else>
             <form action="form" method="post">
                 Text:<br>
@@ -25,6 +25,7 @@
             </form>
         </#if>
 
+        <a href="${baseUrl}">Back to UI</a>
         <script src="/js/main.js"></script>
     </body>
 </html>

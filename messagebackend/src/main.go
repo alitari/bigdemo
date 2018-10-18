@@ -17,7 +17,12 @@ type Message struct {
 	ID           string `json:"id,omitempty"`
 	Text         string `json:"text,omitempty"`
 	Author       string `json:"author,omitempty"`
-	CreationTime int64  `json:"creationTime,omitempty"`
+	CreationTime string `json:"creationTime,omitempty"`
+}
+
+type Instant struct {
+	EpochSecond int64 `json:"epochSecond,omitempty"`
+	Nano        int64 `json:"nano,omitempty"`
 }
 
 type dataAccess interface {
@@ -110,13 +115,18 @@ func message(id string) Message {
 	me, err := dataAcc.getData(id)
 	var message Message
 	if err != nil {
-		message = Message{ID: id, Text: err.Error(), Author: "no", CreationTime: time.Now().Unix()}
+		message = Message{ID: "error", Text: err.Error(), Author: "no", CreationTime: strconv.FormatInt(time.Now().Unix(), 10)}
 	} else {
 		if len(me) > 0 {
-			ti, _ := strconv.ParseInt(me[2], 10, 64)
-			message = Message{ID: id, Text: me[0], Author: me[1], CreationTime: ti}
+			var instant Instant
+			err := json.Unmarshal([]byte(me[2]), &instant)
+			if err != nil {
+				message = Message{ID: "error", Text: err.Error(), Author: "no", CreationTime: strconv.FormatInt(time.Now().Unix(), 10)}
+			}
+			tiStr := strconv.FormatInt(instant.EpochSecond, 10)
+			message = Message{ID: id, Text: me[0], Author: me[1], CreationTime: tiStr}
 		} else {
-			message = Message{ID: id, Text: "not found", Author: "no", CreationTime: time.Now().Unix()}
+			message = Message{ID: id, Text: "not found", Author: "no", CreationTime: strconv.FormatInt(time.Now().Unix(), 10)}
 		}
 	}
 	return message

@@ -6,6 +6,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"os"
+	"strconv"
 	"testing"
 	"time"
 
@@ -59,16 +60,17 @@ func TestMock_message(t *testing.T) {
 	key := "key"
 	text := "myText"
 	author := "myAuthor"
-	time := time.Now().Unix()
-	mockData().data = []string{text, author, fmt.Sprintf("%d", time)}
+	unixTime := time.Now().Unix()
+	instant := fmt.Sprintf("{ \"epochSecond\": %d, \"nano\": %d }", unixTime, 589580000)
+	mockData().data = []string{text, author, instant}
 
 	mess := message(key)
 
-	fmt.Printf("message { id: %s, text: %s, author: %s, creationTime: %d }\n", mess.ID, mess.Text, mess.Author, mess.CreationTime)
+	//fmt.Printf("message { id: %s, text: %s, author: %s, creationTime: { epochSecond: %d 1539859457, nano: %d 589580000} }\n", mess.ID, mess.Text, mess.Author, mess.)
 	require.Equal(key, mess.ID)
 	require.Equal(text, mess.Text)
 	require.Equal(author, mess.Author)
-	require.Equal(time, mess.CreationTime)
+	require.Equal(strconv.FormatInt(unixTime, 10), mess.CreationTime)
 }
 
 func TestMock_messageNotFound(t *testing.T) {
@@ -78,7 +80,7 @@ func TestMock_messageNotFound(t *testing.T) {
 
 	mess := message(key)
 
-	fmt.Printf("message { id: %s, text: %s, author: %s, creationTime: %d }\n", mess.ID, mess.Text, mess.Author, mess.CreationTime)
+	//fmt.Printf("message { id: %s, text: %s, author: %s, creationTime: %d }\n", mess.ID, mess.Text, mess.Author, mess.CreationTime)
 	require.Equal(key, mess.ID)
 	require.Equal("not found", mess.Text)
 	require.Equal("no", mess.Author)
@@ -90,8 +92,9 @@ func TestMock_httpgetMessage(t *testing.T) {
 	key := "key2"
 	text := "myText2"
 	author := "myAuthor2"
-	time := time.Now().Unix()
-	mockData().data = []string{text, author, fmt.Sprintf("%d", time)}
+	unixTime := time.Now().Unix()
+	instant := fmt.Sprintf("{ \"epochSecond\": %d, \"nano\": %d }", unixTime, 589580000)
+	mockData().data = []string{text, author, instant}
 
 	url := fmt.Sprintf("http://localhost:8000/messages/%s", key)
 	resp, err := http.Get(url)
@@ -105,7 +108,7 @@ func TestMock_httpgetMessage(t *testing.T) {
 	require.Equal(http.StatusOK, resp.StatusCode)
 
 	fmt.Printf("body: %v \n", string(body))
-	expectedBody := fmt.Sprintf("{\"id\":\"%s\",\"text\":\"%s\",\"author\":\"%s\",\"creationTime\":%d}\n", key, text, author, time)
+	expectedBody := fmt.Sprintf("{\"id\":\"%s\",\"text\":\"%s\",\"author\":\"%s\",\"creationTime\":\"%d\"}\n", key, text, author, unixTime)
 	require.Equal(expectedBody, string(body))
 }
 
@@ -118,16 +121,18 @@ func Test_redis(t *testing.T) {
 	key := "key3"
 	text := "myText3"
 	author := "myAuthor3"
-	time := time.Now().Unix()
+
+	unixTime := time.Now().Unix()
+	instant := fmt.Sprintf("{ \"epochSecond\": %d, \"nano\": %d }", unixTime, 589580000)
 
 	redisData().redisClient.Del(key)
-	redisData().redisClient.RPush(key, text, author, time)
+	redisData().redisClient.RPush(key, text, author, instant)
 
 	mess := message(key)
 
-	fmt.Printf("message { id: %s, text: %s, author: %s, creationTime: %d }\n", mess.ID, mess.Text, mess.Author, mess.CreationTime)
+	//fmt.Printf("message { id: %s, text: %s, author: %s, creationTime: %d }\n", mess.ID, mess.Text, mess.Author, mess.CreationTime)
 	require.Equal(key, mess.ID)
 	require.Equal(text, mess.Text)
 	require.Equal(author, mess.Author)
-	require.Equal(time, mess.CreationTime)
+	require.Equal(strconv.FormatInt(unixTime, 10), mess.CreationTime)
 }

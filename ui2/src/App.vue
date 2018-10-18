@@ -1,9 +1,8 @@
 <template>
   <div id="app">
-    <img src="./assets/logo.png" height="100" width="150" align="left">
-    <img src="./assets/skaffold.png" height="100" width="150" align="right">
+    <img src="./assets/skaffold.png" height="100" width="150" align="center">
     <h1>{{ msg }}</h1>
-    <h2><a href="/messageapp" >Message Application</a></h2>
+    <h2><a href="/messageapp/form" >Message Application</a></h2>
     <hr>
 
     <!-- <a href="#" v-on:click="fetchMessages('boy')">Fetch messages for word boy</a></h2> -->
@@ -17,7 +16,7 @@
       <thead>
         <tr>
           <th width="20%">Time</th>
-          <th width="20%">Athor</th>
+          <th width="20%">Author</th>
           <th width="60%">Text</th>
         </tr>
       </thead>
@@ -41,7 +40,7 @@ export default {
   name: "app",
   data() {
     return {
-      msg: "Big Microservices DEMO",
+      msg: "Big Skaffold DEMO",
       messages: [],
       goURL: "http://bigdemo.com/messages",
       messageCount: 0
@@ -54,7 +53,17 @@ export default {
       axios
         .get(this.goURL.concat("?word=").concat(input.value))
         .then(response => {
-          this.messages = response.data;
+          this.messages = [];
+          for (var i = 0; i < response.data.length; i++) {
+            var newDate = new Date();
+            newDate.setTime(response.data[i].creationTime * 1000);
+            this.messages.push({
+              text: response.data[i].text,
+              author: response.data[i].author,
+              creationTime: newDate.toUTCString()
+            });
+            console.log(this.messages[i]);
+          }
         })
         .catch(error => {
           console.log(error);

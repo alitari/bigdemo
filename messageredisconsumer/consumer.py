@@ -19,6 +19,7 @@ class KVStorage:
 
         if self.r.rpush(m_id, text, author, creationTime):
             print("successfully with id %s" % m_id)
+            self.r.incr('message_count')
         return m_id
 
     def store_word(self, word, key):

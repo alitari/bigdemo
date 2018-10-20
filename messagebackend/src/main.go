@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"os"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/go-redis/redis"
@@ -41,7 +42,7 @@ func (r *redisDataAccess) getData(key string) (data []string, err error) {
 	return r.redisClient.LRange(key, 0, 2).Result()
 }
 func (r *redisDataAccess) getDataCount() (count int, err error) {
-	cd, err := r.redisClient.Get("message_id").Result()
+	cd, err := r.redisClient.Get("message_count").Result()
 	var cnt = 0
 	if err == nil {
 		cnt, _ = strconv.Atoi(cd)
@@ -53,10 +54,18 @@ func (r *redisDataAccess) queryData(query string) (keys []string, err error) {
 }
 
 func (r *redisDataAccess) deleteData(key string) error {
-	_, err := r.redisClient.Del(key).Result()
+	data, err := r.getData(key)
 	if err != nil {
 		return err
 	}
+	for _, w := range strings.Split(data[0], " ") {
+		r.redisClient.LRem(w, 0, key)
+	}
+	_, err = r.redisClient.Del(key).Result()
+	if err != nil {
+		return err
+	}
+
 	_, err = r.redisClient.Decr("message_count").Result()
 	return err
 }
@@ -139,6 +148,7 @@ func DeleteMessage(w http.ResponseWriter, r *http.Request) {
 	}
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte(err.Error()))
 	} else {
 		w.WriteHeader(http.StatusOK)
 	}

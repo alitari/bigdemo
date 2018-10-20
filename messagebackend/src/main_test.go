@@ -27,6 +27,22 @@ func (r *mockDataAccess) getData(key string) (data []string, err error) {
 	return r.data, er
 }
 
+func (r *mockDataAccess) deleteData(key string) error {
+	var er error
+	if r.data == nil {
+		er = errors.New("error getData")
+	}
+	return er
+}
+
+func (r *mockDataAccess) deleteAllData() error {
+	var er error
+	if r.data == nil {
+		er = errors.New("error getData")
+	}
+	return er
+}
+
 func (r *mockDataAccess) getDataCount() (count int, err error) {
 	var er error
 	if r.count == -1 {
@@ -45,6 +61,7 @@ func (r *mockDataAccess) queryData(query string) (keys []string, err error) {
 func init() {
 	dataAcc = &mockDataAccess{data: nil, count: -1, keys: nil}
 	go serv()
+	time.Sleep(500 * time.Millisecond)
 }
 
 func mockData() *mockDataAccess {
@@ -110,6 +127,24 @@ func TestMock_httpgetMessage(t *testing.T) {
 	fmt.Printf("body: %v \n", string(body))
 	expectedBody := fmt.Sprintf("{\"id\":\"%s\",\"text\":\"%s\",\"author\":\"%s\",\"creationTime\":\"%d\"}\n", key, text, author, unixTime)
 	require.Equal(expectedBody, string(body))
+}
+
+func TestMock_httpdeleteMessage(t *testing.T) {
+	require := require.New(t)
+	mockData().data = []string{"not empty"}
+	key := "key"
+	url := fmt.Sprintf("http://localhost:8000/messages/%s", key)
+	req, err := http.NewRequest("DELETE", url, nil)
+	resp, err := http.DefaultClient.Do(req)
+	require.Nil(err)
+	require.NotNil(resp)
+
+	defer resp.Body.Close()
+	body, err := ioutil.ReadAll(resp.Body)
+	require.Nil(err)
+	require.NotNil(body)
+	require.Equal(http.StatusOK, resp.StatusCode)
+
 }
 
 func Test_redis(t *testing.T) {

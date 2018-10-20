@@ -29,6 +29,8 @@ type dataAccess interface {
 	getData(key string) (data []string, err error)
 	getDataCount() (count int, err error)
 	queryData(query string) (keys []string, err error)
+	deleteData(key string) error
+	deleteAllData() error
 }
 
 type redisDataAccess struct {
@@ -50,6 +52,20 @@ func (r *redisDataAccess) queryData(query string) (keys []string, err error) {
 	return r.redisClient.LRange(query, 0, 10).Result()
 }
 
+func (r *redisDataAccess) deleteData(key string) error {
+	_, err := r.redisClient.Del(key).Result()
+	if err != nil {
+		return err
+	}
+	_, err = r.redisClient.Decr("message_count").Result()
+	return err
+}
+
+func (r *redisDataAccess) deleteAllData() error {
+	_, err := r.redisClient.FlushDB().Result()
+	return err
+}
+
 var messages []Message
 
 var dataAcc dataAccess
@@ -63,7 +79,7 @@ func main() {
 func serv() error {
 	router := mux.NewRouter()
 	router.HandleFunc("/messages/{id}", GetMessage).Methods("GET")
-
+	router.HandleFunc("/messages/{id}", DeleteMessage).Methods("DELETE")
 	router.HandleFunc("/messages", GetMessages).Methods("GET")
 
 	listenPort := fmt.Sprintf(":%s", "8000")
@@ -109,6 +125,23 @@ func GetMessage(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 	json.NewEncoder(w).Encode(mess)
+}
+
+func DeleteMessage(w http.ResponseWriter, r *http.Request) {
+	w.Header().Add("Content-Type", "application/json")
+	params := mux.Vars(r)
+	id := params["id"]
+	var err error
+	if id == "all" {
+		err = dataAcc.deleteAllData()
+	} else {
+		err = dataAcc.deleteData(id)
+	}
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+	} else {
+		w.WriteHeader(http.StatusOK)
+	}
 }
 
 func message(id string) Message {

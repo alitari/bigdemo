@@ -15,13 +15,15 @@
     <table id="messages" align="center">
       <thead>
         <tr>
-          <th width="20%">Time</th>
+          <th width="10%">Id</th>
+          <th width="10%">Time</th>
           <th width="20%">Author</th>
           <th width="60%">Text</th>
         </tr>
       </thead>
       <tbody>
         <tr v-for="m in messages">
+          <td>{{m.id}}</td>
           <td>{{m.creationTime}}</td>
           <td>{{m.author}}</td>
           <td>{{m.text}}</td>
@@ -58,6 +60,7 @@ export default {
             var newDate = new Date();
             newDate.setTime(response.data[i].creationTime * 1000);
             this.messages.push({
+              id: response.data[i].id,
               text: response.data[i].text,
               author: response.data[i].author,
               creationTime: newDate.toUTCString()

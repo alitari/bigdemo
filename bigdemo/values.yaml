@@ -81,6 +81,7 @@ redis:
     livenessProbe:
       initialDelaySeconds: 60
   master:
+    disableCommands: ""
     serviceType: ClusterIP
     readinessProbe:
       initialDelaySeconds: 60

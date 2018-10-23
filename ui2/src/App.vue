@@ -44,16 +44,17 @@ export default {
     return {
       msg: "Big Skaffold DEMO",
       messages: [],
-      goURL: "http://bigdemo.com/messages",
       messageCount: 0
     };
   },
   methods: {
     fetchMessages() {
       var input = document.getElementById("searchInpt");
+      var baseUrl = "http://" + window.location.hostname + "/messages";
+      //console.log(baseUrl);
 
       axios
-        .get(this.goURL.concat("?word=").concat(input.value))
+        .get(baseUrl.concat("?word=").concat(input.value))
         .then(response => {
           this.messages = [];
           for (var i = 0; i < response.data.length; i++) {
@@ -73,7 +74,7 @@ export default {
           this.messages = "error";
         });
       axios
-        .get(this.goURL.concat("/count"))
+        .get(baseUrl.concat("/count"))
         .then(response => {
           this.messageCount = response.data.text;
         })

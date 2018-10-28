@@ -1,4 +1,4 @@
-apiVersion: skaffold/v1alpha4
+apiVersion: skaffold/v1alpha5
 kind: Config
 build:
   artifacts:
@@ -31,7 +31,7 @@ profiles:
       googleCloudBuild:
         projectId: "dcos-145910"
         diskSizeGb: 200
-        machineType: "N1_HIGHCPU_8"
+        machineType: "N1_HIGHCPU_32"
       tagPolicy:
         dateTime:
           format: "2006-01-02"

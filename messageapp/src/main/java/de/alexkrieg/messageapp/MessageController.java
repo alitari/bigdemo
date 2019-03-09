@@ -44,9 +44,4 @@ class MessageController {
         return "message";
     }
 
-    @GetMapping(path = "/logout")
-    public String logout(HttpServletRequest request) throws ServletException {
-        request.logout();
-        return "http://bigdemo.com";
-    }
 }

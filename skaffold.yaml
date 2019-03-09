@@ -1,4 +1,4 @@
-apiVersion: skaffold/v1alpha5
+apiVersion: skaffold/v1beta6
 kind: Config
 build:
   artifacts:
@@ -32,10 +32,6 @@ profiles:
         projectId: "dcos-145910"
         diskSizeGb: 200
         machineType: "N1_HIGHCPU_32"
-      tagPolicy:
-        dateTime:
-          format: "2006-01-02"
-          timezone: "UTC"
     deploy:
       helm:
         releases:

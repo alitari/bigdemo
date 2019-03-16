@@ -2,7 +2,7 @@
   <div id="app">
     <img src="./assets/skaffold.png" height="100" width="150" align="center">
     <h1>{{ msg }}</h1>
-    <h2><a href="/messageapp/form" >Message Application</a></h2>
+    <h2><a href="/messageapp/form" >Write message</a></h2>
     <hr>
 
     <!-- <a href="#" v-on:click="fetchMessages('boy')">Fetch messages for word boy</a></h2> -->
@@ -15,9 +15,9 @@
     <table id="messages" align="center">
       <thead>
         <tr>
-          <th width="10%">Id</th>
-          <th width="10%">Time</th>
-          <th width="20%">Author</th>
+          <th width="5%">Id</th>
+          <th width="20%">Time</th>
+          <th width="15%">Author</th>
           <th width="60%">Text</th>
         </tr>
       </thead>

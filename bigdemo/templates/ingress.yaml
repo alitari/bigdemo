@@ -20,8 +20,7 @@ metadata:
     {{- end }}
 spec:
   rules:
-    {{- range $host := .Values.ingress.hosts }}
-    - host: {{ $host }}
+    - host: {{ .Values.ingress.host }}
       http:
         paths:
           - path: /messageapp
@@ -36,7 +35,6 @@ spec:
             backend:
               serviceName: {{ $ui2Service }}
               servicePort: {{ $ui2ServicePort }}
-    {{- end -}}
   {{- if .Values.ingress.tls }}
   tls:
 {{ toYaml .Values.ingress.tls | indent 4 }}

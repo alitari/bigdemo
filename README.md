@@ -22,6 +22,8 @@ Here an overview of the components:
 
 ### Google Kubernetes Engine (GKE)
 
+:warning: You must change the image names in the [`skaffold.yaml`](./skaffold.yaml) according to your gcloud project!
+
 #### create a k8s cluster
 
 ```bash

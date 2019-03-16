@@ -30,7 +30,7 @@ spec:
             - name: RABBITMQ_MESSAGE_EXCHANGE
               value: {{ .Values.messageapp.rabbitmq.exchange }}
             - name: BASE_URL
-              value: "http://{{ index .Values.ingress.hosts 0 }}"
+              value: "http://{{ .Values.ingress.host }}"
 
           ports:
           - name: http

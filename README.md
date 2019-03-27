@@ -11,7 +11,7 @@ Here an overview of the components:
 ### Docker for windows
 
 - We assume [Docker for Desktop](https://hub.docker.com/editions/community/docker-ce-desktop-windows) is running and you have [`kubectl`](https://kubernetes.io/docs/reference/kubectl/kubectl/) and [`jq`](https://stedolan.github.io/jq/) working.
-- install helm: Download the binaries for windows and execute `helm install`
+- install helm: Download the binaries for windows and execute `helm init`
 - install skaffold
 - Run the build with `skaffold build`. If the images are not present, they must be pulled, this can take a while, so be patient.
 - Deploy the helm chart with `skaffold deploy`. Like the step above the 3rd party images for redis and rabbitmq must be pulled, which can take a while. The redis might have some bootstrap problems with the master-slave connection, solve it with deleting the according pod.

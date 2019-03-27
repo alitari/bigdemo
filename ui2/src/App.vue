@@ -8,7 +8,7 @@
     <!-- <a href="#" v-on:click="fetchMessages('boy')">Fetch messages for word boy</a></h2> -->
     <h2>
       Search by word from {{messageCount}} messages<br>
-    <input id="searchInpt" value=""><button id="searchBtn" v-on:click="fetchMessages()">Search</button>
+    <input id="searchInpt" value="" v-model="word" ><button id="searchBtn" v-on:click="fetchMessages(word)">Search</button>
 
     </h2>
 
@@ -18,7 +18,7 @@
           <th width="5%">Id</th>
           <th width="20%">Time</th>
           <th width="15%">Author</th>
-          <th width="60%">Text</th>
+          <th width="50%">Text</th>
         </tr>
       </thead>
       <tbody>
@@ -48,13 +48,14 @@ export default {
     };
   },
   methods: {
-    fetchMessages() {
-      var input = document.getElementById("searchInpt");
+
+    fetchMessages(word) {
+      // var input = document.getElementById("searchInpt");
       var baseUrl = "http://" + window.location.hostname + "/messages";
       //console.log(baseUrl);
 
       axios
-        .get(baseUrl.concat("?word=").concat(input.value))
+        .get(baseUrl.concat("?word=").concat(word))
         .then(response => {
           this.messages = [];
           for (var i = 0; i < response.data.length; i++) {

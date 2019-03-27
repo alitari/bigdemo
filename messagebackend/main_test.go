@@ -129,24 +129,6 @@ func TestMock_httpgetMessage(t *testing.T) {
 	require.Equal(expectedBody, string(body))
 }
 
-func TestMock_httpdeleteMessage(t *testing.T) {
-	require := require.New(t)
-	mockData().data = []string{"not empty"}
-	key := "key"
-	url := fmt.Sprintf("http://localhost:8000/messages/%s", key)
-	req, err := http.NewRequest("DELETE", url, nil)
-	resp, err := http.DefaultClient.Do(req)
-	require.Nil(err)
-	require.NotNil(resp)
-
-	defer resp.Body.Close()
-	body, err := ioutil.ReadAll(resp.Body)
-	require.Nil(err)
-	require.NotNil(body)
-	require.Equal(http.StatusOK, resp.StatusCode)
-
-}
-
 func Test_redis(t *testing.T) {
 	require := require.New(t)
 	os.Setenv("REDIS_HOST", "localhost")

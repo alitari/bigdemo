@@ -96,11 +96,27 @@ func TestMock_messageNotFound(t *testing.T) {
 	mockData().data = []string{}
 
 	mess := message(key)
-
-	//fmt.Printf("message { id: %s, text: %s, author: %s, creationTime: %d }\n", mess.ID, mess.Text, mess.Author, mess.CreationTime)
 	require.Equal(key, mess.ID)
 	require.Equal("not found", mess.Text)
 	require.Equal("no", mess.Author)
+}
+
+func TestMock_httpdeleteMessage(t *testing.T) {
+	require := require.New(t)
+	mockData().data = []string{"not empty"}
+	key := "key"
+	url := fmt.Sprintf("http://localhost:8000/messages/%s", key)
+	req, err := http.NewRequest("DELETE", url, nil)
+	resp, err := http.DefaultClient.Do(req)
+	require.Nil(err)
+	require.NotNil(resp)
+
+	defer resp.Body.Close()
+	body, err := ioutil.ReadAll(resp.Body)
+	require.Nil(err)
+	require.NotNil(body)
+	require.Equal(http.StatusOK, resp.StatusCode)
+
 }
 
 func TestMock_httpgetMessage(t *testing.T) {

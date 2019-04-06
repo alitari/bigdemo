@@ -19,6 +19,7 @@
           <th width="20%">Time</th>
           <th width="15%">Author</th>
           <th width="50%">Text</th>
+          <th width="10%">Action</th>
         </tr>
       </thead>
       <tbody>
@@ -27,6 +28,7 @@
           <td>{{m.creationTime}}</td>
           <td>{{m.author}}</td>
           <td>{{m.text}}</td>
+          <td><button id="deleteBtn" v-on:click="deleteMessage(m.id)">Delete</button></td>
         </tr>
       </tbody>
     </table>
@@ -48,6 +50,24 @@ export default {
     };
   },
   methods: {
+
+    deleteMessage(id) {
+      var baseUrl = "http://" + window.location.hostname + "/messages/"+id;
+      console.log(baseUrl);
+
+      axios
+        .delete(baseUrl)
+        .then(response => {
+            console.log('deleted message with id '+id);
+            window.location.reload(false); 
+          }
+        )
+        .catch(error => {
+          console.log(error);
+          this.messages = "error";
+        });
+    },
+
 
     fetchMessages(word) {
       // var input = document.getElementById("searchInpt");

@@ -89,6 +89,7 @@ func serv() error {
 	router := mux.NewRouter()
 	router.HandleFunc("/messages/{id}", GetMessage).Methods("GET")
 	router.HandleFunc("/messages", GetMessages).Methods("GET")
+	router.HandleFunc("/messages/{id}", DeleteMessage).Methods("DELETE")
 
 	listenPort := fmt.Sprintf(":%s", "8000")
 	fmt.Printf("listening: %s\n", listenPort)
@@ -107,6 +108,24 @@ func createRedisClient() *redis.Client {
 		DB:       0, // use default DB
 	})
 	return redisClient
+}
+
+func DeleteMessage(w http.ResponseWriter, r *http.Request) {
+	w.Header().Add("Content-Type", "application/json")
+	params := mux.Vars(r)
+	id := params["id"]
+	var err error
+	if id == "all" {
+		err = dataAcc.deleteAllData()
+	} else {
+		err = dataAcc.deleteData(id)
+	}
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte(err.Error()))
+	} else {
+		w.WriteHeader(http.StatusOK)
+	}
 }
 
 // GetMessage for ID
